@@ -201,13 +201,13 @@ def _get_repo():
 
 def _confirm_dangerous():
         repo = _get_repo()
-        status=porcelain.status(repo.path)
-        if any(status.staged.values()+status.unstaged):
+        status = porcelain.status(repo.path)
+        if any(status.staged.values() + status.unstaged):
             force=input('WARNING: there are uncommitted modified files and/or staged changes. These could be overwritten by this command. Continue anyway? [y/n] ')
             if not force=='y':
                 raise Exception('User cancelled dangerous operation')
                 
-def unstage(commit='HEAD',paths=[]):
+def unstage(commit='HEAD', paths=[]):
     repo=_get_repo().repo
     for somepath in paths:
         #print path
@@ -266,11 +266,11 @@ def git_init(args):
 def git_status(args):
     if len(args) == 0:
         repo = _get_repo()
-        status = porcelain.status(repo.repo.path)
+        status = porcelain.status(repo.repo.path)  ######## raises error
         print('STAGED')
         for k,v in iteritems(status.staged):
             if v:
-                print(k,v)
+                print(k, v)
         print('UNSTAGED LOCAL MODS')
         print(status.unstaged)
         
@@ -414,7 +414,7 @@ def get_config_or_prompt(repo, section, name, prompt, save=None):
             if saveglobal:
                 globalcfg = config.default_backends()
                 if not globalcfg:
-                    open(os.path.expanduser('~/.gitconfig','w')).close() #create file
+                    open(os.path.expanduser('~/.gitconfig'), 'w').close() #create file
                     globalcfg = config.default_backends()[0]
                 globalcfg.set(section,name,value)
                 globalcfg.write_to_path()
